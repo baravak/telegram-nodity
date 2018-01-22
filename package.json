@@ -1,0 +1,16 @@
+{
+  "name": "telegram-nodity",
+  "version": "0.0.1",
+  "description": "telegram api bot for node.js",
+  "main": "index.js",
+  "scripts": {
+    "start" : "node index.js"
+  },
+  "keywords": [
+    "telegram",
+    "ndode.js",
+    "bot"
+  ],
+  "author": "Baravak <itb.baravak@gmail.com>",
+  "license": "ISC"
+}
