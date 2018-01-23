@@ -19,7 +19,7 @@ class server
 					try
 					{
 						let data = JSON.parse(body)
-						queue.call(_nodity, data)
+						new queue(_nodity, data)
 					}
 					catch(e)
 					{

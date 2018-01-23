@@ -4,7 +4,7 @@
   "description": "telegram api bot for node.js",
   "main": "index.js",
   "scripts": {
-    "start" : "node index.js"
+    "start": "node index.js"
   },
   "keywords": [
     "telegram",
@@ -12,5 +12,8 @@
     "bot"
   ],
   "author": "Baravak <itb.baravak@gmail.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.1.2"
+  }
 }

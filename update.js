@@ -1,7 +1,8 @@
-const https       = require('https')
-const path        = require('path')
-const fs          = require('fs')
-const queue       = require('./queue')
+const https  = require('https')
+const colors = require('colors')
+const path   = require('path')
+const fs     = require('fs')
+const queue  = require('./queue')
 
 const main_path   = path.dirname(require.main.filename)
 const config_path = path.join(main_path, 'config.json')
@@ -19,10 +20,11 @@ class update
 	{
 		const offset = config.offset ? `?offset=${config.offset}` : ''
 		const options = {
-			host   : 'api.telegram.org',
-			path   : `/bot${_nodity.options.api.token}/getUpdates${offset}`,
-			method : "GET"
+			host    : 'api.telegram.org',
+			path    : `/bot${_nodity.options.api.token}/getUpdates${offset}`,
+			method  : "GET",
 		}
+		console.log('send request for getUpdates'.bold.cyan)
 		const request = https.request(options, (response) => {
 			var body = ''
 			response.on('data', (chunk) => {
@@ -32,9 +34,10 @@ class update
 				try
 				{
 					let data = JSON.parse(body)
+					console.log(`get ${data.result.length-1} result`.cyan)
 					for (var i = 0; i < data.result.length; i++) {
 						if(offset !== '' && i === 0 ) continue
-						queue.call(_nodity, data.result[i])
+						new queue(_nodity, data.result[i])
 					}
 					if(config.offset !== data.result[i-1].update_id)
 					{
@@ -44,21 +47,35 @@ class update
 					setTimeout(function()
 					{
 						new update(_nodity)
-					}, 500)
+					}, _nodity.options.update_listen_time)
 				}
 				catch(e)
 				{
-					console.error("JSON PARSE");
+					setTimeout(function()
+					{
+						new update(_nodity)
+					}, _nodity.options.update_listen_time)
+					console.log(`JSON PARSE: ${e.message}`.red);
 					console.log(e)
 				}
 			})
 		})
-
+		request.on('socket', (socket) => {
+			socket.setTimeout(_nodity.options.update_listen_timeout)
+			socket.on('timeout', () => {
+				request.abort()
+			})
+		})
 		request.on('error', (e) => {
-			console.error(`problem with request: ${e.message}`);
+			console.log(`problem with request: ${e.message}`.bold.red);
+			new update(_nodity)
 		});
 
 		request.end()
 	}
 }
+
+process.on('uncaughtException', function (err) {
+	console.log(err);
+});
 module.exports = update

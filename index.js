@@ -1,7 +1,7 @@
-const server  = require('./server')
-const update  = require('./update')
-const request = require('./request')
-const on      = require('./on')
+const server = require('./server')
+const update = require('./update')
+const tg     = require('./tg')
+const on     = require('./on')
 
 class telegram_nodity
 {
@@ -13,11 +13,13 @@ class telegram_nodity
 				port : 3313,
 				host : '127.0.0.2'
 			},
+			update_listen_timeout : 2000,
+			update_listen_time : 1000,
 			queue_timeout : 3000
 		}
 		this.options  = Object.assign(defalut_options, _options)
 		this.events   = new on(this)
-		this._request = new request(this)
+		this._tg = new tg(this)
 
 		if(typeof this.options.api !== 'object')
 		{
@@ -45,9 +47,9 @@ class telegram_nodity
 	{
 		return this.events.trigger(...arguments)
 	}
-	request()
+	tg()
 	{
-		return this._request.send(...arguments)
+		return this._tg.send(...arguments)
 	}
 }
 module.exports = telegram_nodity

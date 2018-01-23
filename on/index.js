@@ -1,5 +1,6 @@
-class events {
+const request = require('../request')
 
+class events {
 	constructor(_nodity)
 	{
 		this.nodity           = _nodity
@@ -28,7 +29,7 @@ class events {
 	{
 		if(!this._events[_event])
 		{
-			_arguments[0].next()
+			_arguments[1].end()
 			return false
 		}
 		if(_arguments.length === 0)
@@ -40,7 +41,7 @@ class events {
 			let track = this._events[_event][i];
 			if(!track.condition)
 			{
-				track.fn.call(this.nodity, _arguments[0], _arguments[0].data)
+				track.fn.call(this.nodity, ..._arguments)
 			}
 		}
 	}
