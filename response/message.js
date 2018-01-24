@@ -22,5 +22,33 @@ class message extends response
 		Object.assign(parameters, _parameters)
 		this.nodity.tg('sendMessage', parameters, _callback)
 	}
+	message(_parameters, _callback = null)
+	{
+		const parameters = {
+			chat_id : this.request.getChat_id()
+		}
+		if(typeof _parameters == 'string')
+		{
+			_parameters = {
+				'text' : _parameters
+			}
+		}
+		Object.assign(parameters, _parameters)
+		this.nodity.tg('sendMessage', parameters, _callback)
+	}
+	pv(_parameters, _callback = null)
+	{
+		const parameters = {
+			chat_id : this.request.getUser_id()
+		}
+		if(typeof _parameters == 'string')
+		{
+			_parameters = {
+				'text' : _parameters
+			}
+		}
+		Object.assign(parameters, _parameters)
+		this.nodity.tg('sendMessage', parameters, _callback)
+	}
 }
 module.exports = message

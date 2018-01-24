@@ -1,4 +1,5 @@
-const https   = require('https')
+const https  = require('https')
+const colors = require('colors')
 class request
 {
 	constructor(_nodity)
@@ -25,7 +26,11 @@ class request
 				try
 				{
 					let data = JSON.parse(body)
-					console.log(data)
+					if(!data.ok)
+					{
+						console.log(`${data.description} : ${data.error_code}`.red)
+						_callback(data, null)
+					}
 					if(_callback)
 					{
 						_callback(null, data)
