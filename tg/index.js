@@ -1,13 +1,41 @@
 const https  = require('https')
 const colors = require('colors')
-class request
+const QUEUE = {
+	length    : 0,
+	cache     : {},
+	listen    : null,
+	last_time : 0
+}
+let nodity
+class tg
 {
 	constructor(_nodity)
 	{
-		this.nodity = _nodity
+		this.nodity = nodity = _nodity
+		listen_queue.call(this)
 	}
 	send(_method, _parameters, _callback)
 	{
+		if(['sendmessage', 'forwardmessage', 'sendphoto', 'sendaudio', 'senddocument', 'sendvideo', 'sendvoice', 'sendvideoNote', 'sendmediaGroup', 'sendlocation', 'editmessageliveLocation', 'sendvenue', 'sendcontact', 'editmessagetext', 'editmessagecaption', 'editmessagereplymarkup'
+			].indexOf(_method.toLowerCase()) !== -1 && !_parameters.disable_queue)
+		{
+			if(!QUEUE.cache[_parameters.chat_id])
+			{
+				QUEUE.cache[_parameters.chat_id] = []
+				QUEUE.length++
+			}
+			QUEUE.cache[_parameters.chat_id].push({
+				method     : _method,
+				parameters : _parameters,
+				callback   : _callback
+			})
+			if(!QUEUE.listen)
+			{
+				listen_queue.call(this)
+			}
+			return
+		}
+		delete _parameters.disable_queue
 		let parameters = {}
 		Object.assign(parameters, this.nodity.options.response, _parameters)
 		const options = {
@@ -15,8 +43,7 @@ class request
 			path             : `/bot${this.nodity.options.api.token}/${_method}`,
 			method           : "POST",
 			headers          : {
-				'Content-Type'   : 'application/json',
-				'Content-Length' : JSON.stringify(parameters).length
+				'Content-Type'   : 'application/json; charset=utf-8',
 			}
 		}
 		const request = https.request(options, (response) => {
@@ -52,4 +79,51 @@ class request
 		request.end()
 	}
 }
-module.exports = request
+
+function listen_queue(_force)
+{
+	if(QUEUE.listen && !_force)
+	{
+		return
+	}
+	if(QUEUE.length == 0)
+	{
+		return
+	}
+	else if((new Date()).getTime() - QUEUE.last_time < 1000)
+	{
+		QUEUE.listen = null
+		setTimeout(listen_queue.bind(this, true), 1000 - ((new Date()).getTime() - QUEUE.last_time))
+	}
+	else
+	{
+		QUEUE.listen = true
+		let count = 0
+		for (let i in QUEUE.cache) {
+			count++
+			const onQueue = QUEUE.cache[i][0]
+			QUEUE.cache[i].shift()
+			if(QUEUE.cache[i].length == 0)
+			{
+				delete QUEUE.cache[i]
+				QUEUE.length--
+			}
+			onQueue.parameters.disable_queue = true
+			this.send(onQueue.method, onQueue.parameters, onQueue.callback)
+			if(count == 30)
+			{
+				break
+			}
+		}
+		QUEUE.last_time = (new Date()).getTime()
+		if(QUEUE.length)
+		{
+			setTimeout(listen_queue.bind(this, true), 1100)
+		}
+		else
+		{
+			QUEUE.listen = null
+		}
+	}
+}
+module.exports = tg

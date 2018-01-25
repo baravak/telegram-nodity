@@ -13,7 +13,7 @@ class message extends response
 			reply_to_message_id : this.request.getMessage_id(),
 			chat_id : this.request.getChat_id()
 		}
-		if(typeof _parameters == 'string')
+		if(typeof _parameters != 'object')
 		{
 			_parameters = {
 				'text' : _parameters
@@ -27,7 +27,7 @@ class message extends response
 		const parameters = {
 			chat_id : this.request.getChat_id()
 		}
-		if(typeof _parameters == 'string')
+		if(typeof _parameters != 'object')
 		{
 			_parameters = {
 				'text' : _parameters
