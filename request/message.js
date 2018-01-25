@@ -57,6 +57,8 @@ class message extends request
 			}
 		}
 	}
+
+	// global
 	getText()
 	{
 		return this._request.text
@@ -73,5 +75,51 @@ class message extends request
 	{
 		return this.request.message.from.id
 	}
+
+	// forward
+	getForward(_demand)
+	{
+		if(!this._request.isForward) return false
+		switch(_demand)
+		{
+			case "user_id"    : return this.request.message.forward_from.id
+			case "user"       : return this.request.message.forward_from
+			case "chat_id"    : return this.request.message.forward_from_chat.id
+			case "chat"       : return this.request.message.forward_from_chat
+			case "message_id" : return this.request.message.forward_from_message_id
+			case "date"       : return this.request.message.forward_from_message_id
+		}
+	}
+	getForward_user_id()
+	{
+		return this.getForward('user_id')
+	}
+	getForward_user()
+	{
+		return this.getForward('user')
+	}
+	getForward_chat_id()
+	{
+		return this.getForward('chat_id')
+	}
+	getForward_chat()
+	{
+		return this.getForward('chat')
+	}
+	getForward_message_id()
+	{
+		return this.getForward('message_id')
+	}
+	getForward_date()
+	{
+		return this.getForward('date')
+	}
+
+	// reply
+	getReply_message_id()
+	{
+		return this.request.message.reply_to_message.message_id
+	}
+
 }
 module.exports = message

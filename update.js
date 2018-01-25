@@ -36,10 +36,10 @@ class update
 					let data = JSON.parse(body)
 					console.log(`get ${data.result.length-1} result`.cyan)
 					for (var i = 0; i < data.result.length; i++) {
-						if(offset !== '' && i === 0 ) continue
+						if(config.offset == data.result[i].update_id) continue
 						new queue(_nodity, data.result[i])
 					}
-					if(config.offset !== data.result[i-1].update_id)
+					if(data.result.length && config.offset !== data.result[i-1].update_id)
 					{
 						config.offset = data.result[i-1].update_id
 						fs.writeFileSync(config_path, JSON.stringify(config))
