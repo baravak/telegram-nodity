@@ -1,10 +1,15 @@
 {
   "name": "telegram-nodity",
-  "version": "0.0.1",
-  "description": "telegram api bot for node.js",
+  "version": "0.0.2",
+  "description": "A clean and robust Node.js module to interact with official Telegram Bot API",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
+  },
+  "homepage": "https://github.com/baravak/telegram-nodity",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://github.com/baravak/telegram-nodity.git"
   },
   "keywords": [
     "telegram",
