@@ -13,6 +13,7 @@ class telegram_nodity
 				port : 3313,
 				host : '127.0.0.2'
 			},
+			response : {},
 			update_listen_timeout : 2000,
 			update_listen_time : 1000,
 			queue_timeout : 3000

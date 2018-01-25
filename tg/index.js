@@ -8,13 +8,15 @@ class request
 	}
 	send(_method, _parameters, _callback)
 	{
+		let parameters = {}
+		Object.assign(parameters, this.nodity.options.response, _parameters)
 		const options = {
 			host             : 'api.telegram.org',
 			path             : `/bot${this.nodity.options.api.token}/${_method}`,
 			method           : "POST",
 			headers          : {
 				'Content-Type'   : 'application/json',
-				'Content-Length' : JSON.stringify(_parameters).length
+				'Content-Length' : JSON.stringify(parameters).length
 			}
 		}
 		const request = https.request(options, (response) => {
@@ -46,7 +48,7 @@ class request
 				}
 			})
 		})
-		request.write(JSON.stringify(_parameters))
+		request.write(JSON.stringify(parameters))
 		request.end()
 	}
 }
