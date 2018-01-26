@@ -22,7 +22,7 @@ class queue
 			}
 		}
 		const rq = new rq_methods[method](method, _request, _nodity)
-		ID       = rq._request.ID
+		ID       = rq.ID
 		method   = rq.method
 		if(!queue_catch[ID])
 		{
