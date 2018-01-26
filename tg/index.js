@@ -1,8 +1,7 @@
 const https  = require('https')
 const colors = require('colors')
 const QUEUE = {
-	length    : 0,
-	cache     : {},
+	cache     : [],
 	listen    : null,
 	last_time : 0
 }
@@ -19,12 +18,8 @@ class tg
 		if(['sendmessage', 'forwardmessage', 'sendphoto', 'sendaudio', 'senddocument', 'sendvideo', 'sendvoice', 'sendvideoNote', 'sendmediaGroup', 'sendlocation', 'editmessageliveLocation', 'sendvenue', 'sendcontact', 'editmessagetext', 'editmessagecaption', 'editmessagereplymarkup'
 			].indexOf(_method.toLowerCase()) !== -1 && !_parameters.disable_queue)
 		{
-			if(!QUEUE.cache[_parameters.chat_id])
-			{
-				QUEUE.cache[_parameters.chat_id] = []
-				QUEUE.length++
-			}
-			QUEUE.cache[_parameters.chat_id].push({
+			QUEUE.cache.push({
+				user_id    : _parameters.chat_id,
 				method     : _method,
 				parameters : _parameters,
 				callback   : _callback
@@ -35,7 +30,10 @@ class tg
 			}
 			return
 		}
-		delete _parameters.disable_queue
+		if(_parameters.disable_queue)
+		{
+			delete _parameters.disable_queue
+		}
 		let parameters = {}
 		Object.assign(parameters, this.nodity.options.response, _parameters)
 		const options = {
@@ -99,15 +97,15 @@ function listen_queue(_force)
 	{
 		QUEUE.listen = true
 		let count = 0
+		const users = []
 		for (let i in QUEUE.cache) {
-			count++
-			const onQueue = QUEUE.cache[i][0]
-			QUEUE.cache[i].shift()
-			if(QUEUE.cache[i].length == 0)
+			if(users.indexOf(QUEUE.cache[i].user_id) !== -1)
 			{
-				delete QUEUE.cache[i]
-				QUEUE.length--
+				continue
 			}
+			count++
+			const onQueue = QUEUE.cache.splice(i, 1)[0]
+			users.push(onQueue.user_id)
 			onQueue.parameters.disable_queue = true
 			this.send(onQueue.method, onQueue.parameters, onQueue.callback)
 			if(count == 30)
@@ -116,9 +114,9 @@ function listen_queue(_force)
 			}
 		}
 		QUEUE.last_time = (new Date()).getTime()
-		if(QUEUE.length)
+		if(QUEUE.cache)
 		{
-			setTimeout(listen_queue.bind(this, true), 1100)
+			setTimeout(listen_queue.bind(this, true), 900)
 		}
 		else
 		{
