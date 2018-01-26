@@ -19,5 +19,9 @@ class response
 	{
 		require('../queue').next(this.user_id, this.ID)
 	}
+	send(..._args)
+	{
+		this.nodity.tg(..._args)
+	}
 }
 module.exports = response
