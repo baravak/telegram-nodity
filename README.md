@@ -67,6 +67,19 @@ if don't use `response.end()` in every reques, end request after `queue_timeout`
 ### events
 telegram send nine event to bot _(message, edited_message, channel_post, edited_channel_post, inline_query, chosen_inline_result, callback_query, shipping_query, pre_checkout_query)_; `telegram-nodity` send every event to custom router
 
+```js
+tg.on('message', function(request, response){})
+tg.on('edited_message', function(request, response){})
+tg.on('channel_post', function(request, response){})
+tg.on('edited_channel_post', function(request, response){})
+tg.on('inline_query', function(request, response){})
+tg.on('chosen_inline_result', function(request, response){})
+tg.on('callback_query', function(request, response){})
+tg.on('shipping_query', function(request, response){})
+tg.on('pre_checkout_query', function(request, response){})
+
+```
+
 #### message(request, response)
 
 ##### request
@@ -75,17 +88,45 @@ telegram send nine event to bot _(message, edited_message, channel_post, edited_
 
 return `message.text` or `message.caption`
 
+```js
+tg.on('message', (request, response) => {
+	console.log(request.getText())
+    response.end()
+})
+```
+
 ###### getMessage_id()
 
 return message `message_id`
+
+```js
+tg.on('message', (request, response) => {
+	console.log(request.getMessage_id())
+    response.end()
+})
+```
 
 ###### getChat_id()
 
 return message `message.chat.id`
 
+```js
+tg.on('message', (request, response) => {
+	console.log(request.getChat_id())
+    response.end()
+})
+```
+
 ###### getUser_id()
 
 return message `user.id`
+
+```js
+tg.on('message', (request, response) => {
+	console.log(request.getUser_id())
+    response.end()
+})
+```
 
 ###### getForward(_demand)
 
@@ -113,11 +154,11 @@ return message `message.forward_from_message_id`
 
 ###### getForward_date()
 
-return message `message.forward_from_message_id`
+return message `message.forward_date`
 
 ###### getReply_message_id()
 
-return message `message.forward_date`
+return message `message.reply_to_message.message_id`
 
 ###### type
 
@@ -174,6 +215,22 @@ send `_method` with `_parameters` to telegram and call `_callback(err, response)
 ###### reply(_parameters, _callback = null)
 
 reply to `request.message.message_id` with `_parameters` and call `_callback(err, response)` after end request
+
+```js
+tg.on('message', (request, response) => {
+	response.reply('Hello', (err, resp) => {
+    	response.end()
+    })
+})
+```
+
+```js
+tg.on('message', (request, response) => {
+	response.reply({text: 'hello'}, (err, resp) => {
+    	response.end()
+    })
+})
+```
 
 ###### message(_parameters, _callback = null)
 
