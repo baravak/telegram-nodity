@@ -21,7 +21,7 @@ const tg = new telegram_nodity({
 	},
 })
 
-tg.on('message', function(request, response)
+tg.on('message', (request, response) =>
 {
 	response.reply(request.getText(), (_err, _res) =>
 		response.end()
@@ -68,15 +68,22 @@ if don't use `response.end()` in every reques, end request after `queue_timeout`
 telegram send nine event to bot _(message, edited_message, channel_post, edited_channel_post, inline_query, chosen_inline_result, callback_query, shipping_query, pre_checkout_query)_; `telegram-nodity` send every event to custom router
 
 ```js
-tg.on('message', function(request, response){})
-tg.on('edited_message', function(request, response){})
-tg.on('channel_post', function(request, response){})
-tg.on('edited_channel_post', function(request, response){})
-tg.on('inline_query', function(request, response){})
-tg.on('chosen_inline_result', function(request, response){})
-tg.on('callback_query', function(request, response){})
-tg.on('shipping_query', function(request, response){})
-tg.on('pre_checkout_query', function(request, response){})
+tg.on('message', (request, response) => {})
+tg.on('edited_message', (request, response) => {})
+tg.on('channel_post', (request, response) => {})
+tg.on('edited_channel_post', (request, response) => {})
+tg.on('inline_query', (request, response) => {})
+tg.on('chosen_inline_result', (request, response) => {})
+tg.on('callback_query', (request, response) => {})
+tg.on('shipping_query', (request, response) => {})
+tg.on('pre_checkout_query', (request, response) => {})
+
+tg.on('text', (request, response) => {})
+tg.on('type:photo', (request, response) => {})
+tg.on('file', (request, response) => {})
+tg.on('forward', (request, response) => {})
+tg.on('reply', (request, response) => {})
+
 
 ```
 

@@ -4,30 +4,30 @@ class message extends request
 	constructor(_method, _request, _nodity)
 	{
 		super(_method, _request, _nodity)
-		this.type = 'message'
-		this.ID = _request[this.type].from.id
-		if(_request[this.type].forward_from)
+		this.type = 'text'
+		this.ID = _request[_method].from.id
+		if(_request[_method].forward_from)
 		{
 			this.isForward = true
 		}
-		if(_request[this.type].reply_to_message)
+		if(_request[_method].reply_to_message)
 		{
-			this.isReplay = true
+			this.isReply = true
 		}
 
-		if(_request[this.type].text)
+		if(_request[_method].text)
 		{
 			this.isText = true
-			this.text = _request[this.type].text
+			this.text = _request[_method].text
 		}
 		else
 		{
-			for(let type in _request[this.type])
+			for(let type in _request[_method])
 			{
 				if(['audio', 'voice', 'video', 'document', 'photo'].indexOf(type) !== -1)
 				{
 					this.isFile = true
-					this.text = _request[this.type].caption
+					this.text = _request[_method].caption
 					this.type = type
 					break
 				}
