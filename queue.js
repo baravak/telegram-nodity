@@ -1,9 +1,11 @@
 const colors = require('colors')
 const rq_methods = {
-	message : require("./request/message")
+	message        : require("./request/message"),
+	callback_query : require("./request/callback_query")
 }
 const rs_methods = {
-	message : require("./response/message")
+	message        : require("./response/message"),
+	callback_query : require("./response/callback_query")
 }
 let queue_catch = {}
 let nodity
@@ -20,6 +22,11 @@ class queue
 				method = method
 				break
 			}
+		}
+		if(!rq_methods[method])
+		{
+			console.log(`this version doesn't support \`${method}\` evenet`)
+			return false
 		}
 		const rq = new rq_methods[method](method, _request, _nodity)
 		ID       = rq.ID

@@ -254,3 +254,22 @@ forward message from `_parameters` to `message.user.id` and call `_callback(err,
 ###### forward_to(_parameters, _callback = null)
 
 forward `message.message_id` to `_parameters` and call `_callback(err, response)` after end request
+
+#### callback_query(request, response)
+
+##### request
+
+###### getUser_id ()
+
+###### getCallback_id ()
+
+###### getData ()
+
+###### getChat_instance ()
+
+###### getInline_message_id ()
+
+##### response
+
+###### answer()
+

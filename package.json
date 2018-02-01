@@ -1,6 +1,6 @@
 {
   "name": "telegram-nodity",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A clean and robust Node.js module to interact with official Telegram Bot API",
   "main": "index.js",
   "scripts": {

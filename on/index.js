@@ -27,11 +27,6 @@ class events {
 
 	trigger(_event, _condition, ..._arguments)
 	{
-		if(!this._events[_event])
-		{
-			_arguments[1].end()
-			return false
-		}
 		if(_arguments.length === 0)
 		{
 			return false
@@ -54,11 +49,11 @@ class events {
 				sub_event.push(`${condition_obj[i]}:${_arguments[0][condition_obj[i]]}`)
 			}
 		}
-		console.log(sub_event)
-
+		let has_event = false
 		for (var i = 0; i < sub_event.length; i++) {
 			if(this._events[sub_event[i]])
 			{
+				has_event = true
 				this._events[sub_event[i]].forEach((s_event) => {
 					if(!s_event.condition)
 					{
@@ -66,6 +61,11 @@ class events {
 					}
 				})
 			}
+		}
+		if(!has_event)
+		{
+			_arguments[1].end()
+			return false
 		}
 	}
 }
