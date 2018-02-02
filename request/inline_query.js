@@ -8,24 +8,24 @@ class callback_query extends request
 		this.ID = _request.callback_query.from.id
 	}
 
-	getCallback_id()
+	getInline_id()
 	{
-		return this.request.callback_query.id
+		return this.request.inline_query.id
 	}
 
-	getData()
+	getLocation()
 	{
-		return this.request.callback_query.data
+		return this.request.inline_query.location
 	}
 
-	getChat_instance()
+	getQuery()
 	{
-		return this.request.callback_query.chat_instance
+		return this.request.inline_query.query
 	}
 
-	getInline_message_id()
+	getOffset()
 	{
-		return this.request.callback_query.inline_message_id
+		return this.request.inline_query.offset
 	}
 }
 module.exports = callback_query

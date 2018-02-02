@@ -4,6 +4,7 @@ class message extends request
 	constructor(_method, _request, _nodity)
 	{
 		super(_method, _request, _nodity)
+		this.addMethod('getUser_id', 'getFrom_user_id', 'getFrom_username', 'getFrom_first_name', 'getFrom_last_name', 'getFrom_is_bot', 'getFrom_language_code')
 		this.type = 'text'
 		this.ID = _request[_method].from.id
 		if(_request[_method].forward_from)
@@ -64,15 +65,11 @@ class message extends request
 	}
 	getMessage_id()
 	{
-		return this.request.message.message_id
+		return this.request[this.method].message_id
 	}
 	getChat_id()
 	{
-		return this.request.message.chat.id
-	}
-	getUser_id()
-	{
-		return this.request.message.from.id
+		return this.request[this.method].chat.id
 	}
 
 	// forward
@@ -81,12 +78,12 @@ class message extends request
 		if(!this.isForward) return false
 		switch(_demand)
 		{
-			case "user_id"    : return this.request.message.forward_from.id
-			case "user"       : return this.request.message.forward_from
-			case "chat_id"    : return this.request.message.forward_from_chat.id
-			case "chat"       : return this.request.message.forward_from_chat
-			case "message_id" : return this.request.message.forward_from_message_id
-			case "date"       : return this.request.message.forward_date
+			case "user_id"    : return this.request[this.method].forward_from.id
+			case "user"       : return this.request[this.method].forward_from
+			case "chat_id"    : return this.request[this.method].forward_from_chat.id
+			case "chat"       : return this.request[this.method].forward_from_chat
+			case "message_id" : return this.request[this.method].forward_from_message_id
+			case "date"       : return this.request[this.method].forward_date
 		}
 	}
 	getForward_user_id()
@@ -117,7 +114,7 @@ class message extends request
 	// reply
 	getReply_message_id()
 	{
-		return this.request.message.reply_to_message.message_id
+		return this.request[this.method].reply_to_message.message_id
 	}
 
 }

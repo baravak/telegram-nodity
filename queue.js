@@ -1,11 +1,21 @@
 const colors = require('colors')
 const rq_methods = {
-	message        : require("./request/message"),
-	callback_query : require("./request/callback_query")
+	message              : require("./request/message"),
+	callback_query       : require("./request/callback_query"),
+	edited_message       : require("./request/edited_message"),
+	channel_post         : require("./request/channel_post"),
+	edited_channel_post  : require("./request/edited_channel_post"),
+	inline_query         : require("./request/inline_query"),
+	chosen_inline_result : require("./request/chosen_inline_result"),
 }
 const rs_methods = {
-	message        : require("./response/message"),
-	callback_query : require("./response/callback_query")
+	message              : require("./response/message"),
+	callback_query       : require("./response/callback_query"),
+	edited_message       : require("./response/edited_message"),
+	channel_post         : require("./response/channel_post"),
+	edited_channel_post  : require("./response/edited_channel_post"),
+	inline_query         : require("./response/inline_query"),
+	chosen_inline_result : require("./response/chosen_inline_result"),
 }
 let queue_catch = {}
 let nodity

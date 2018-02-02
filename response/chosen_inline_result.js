@@ -1,11 +1,11 @@
 const response = require("./")
 const tg = require("../tg")
 
-class message extends response
+class chosen_inline_result extends response
 {
 	constructor(_track, _request, _nodity)
 	{
 		super(_track, _request, _nodity)
 	}
 }
-module.exports = message
+module.exports = chosen_inline_result

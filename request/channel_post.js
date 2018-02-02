@@ -1,10 +1,10 @@
 const message = require('./message')
 
-class edited_message extends message
+class channel_post extends message
 {
 	constructor()
 	{
 		super(...arguments)
 	}
 }
-module.exports = edited_message
+module.exports = channel_post

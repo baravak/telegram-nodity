@@ -87,7 +87,7 @@ tg.on('reply', (request, response) => {})
 
 ```
 
-#### message(request, response)
+#### message, edited_message, channel_post, edited_channel_post(request, response)
 
 ##### request
 
@@ -134,6 +134,10 @@ tg.on('message', (request, response) => {
     response.end()
 })
 ```
+
+###### getEdit_date()
+
+return `message.edit_date`
 
 ###### getForward(_demand)
 
@@ -271,5 +275,40 @@ forward `message.message_id` to `_parameters` and call `_callback(err, response)
 
 ##### response
 
+> message response + =>
+
 ###### answer()
 
+#### inline_query(request, response)
+
+##### request
+
+###### getInline_id ()
+
+###### getLocation ()
+
+###### getQuery ()
+
+###### getOffset ()
+
+##### response
+
+> message response + =>
+
+###### answer()
+
+#### chosen_inline_result(request, response)
+
+##### request
+
+###### getResult_id ()
+
+###### getLocation ()
+
+###### getQuery ()
+
+###### getInline_message_id ()
+
+##### response
+
+> message response + =>
