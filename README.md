@@ -307,8 +307,6 @@ forward `message.message_id` to `_parameters` and call `_callback(err, response)
 
 ###### getQuery ()
 
-###### getInline_message_id ()
-
 ##### response
 
 > message response + =>

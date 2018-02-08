@@ -2,6 +2,7 @@ class response
 {
 	constructor(_track, _request, _nodity)
 	{
+		this.ended = false
 		this.nodity = _nodity
 		for (let name in _track)
 		{
@@ -17,6 +18,11 @@ class response
 	}
 	end()
 	{
+		if(this.ended)
+		{
+			return
+		}
+		this.ended = true
 		require('../queue').next(this.user_id, this.ID)
 	}
 	send(..._args)

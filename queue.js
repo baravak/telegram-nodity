@@ -57,15 +57,10 @@ class queue
 		if(!queue_catch[ID].lock)
 		{
 			queue_catch[ID].lock = true
-			queue_catch[ID]._timeout = setTimeout(function()
-			{
-				console.error(`timeout for ${queue_catch[ID].user_id}`.yellow)
-				queue.next(queue_catch[ID].user_id, queue_catch[ID].ID)
-			}, queue_catch[ID].timeout)
-			_nodity.trigger(method, null, rq, new rs_methods[method](queue_catch[ID], rq, _nodity))
+			queue.next(ID, queue_catch[ID].ID, true)
 		}
 	}
-	static next(_user_id, _id)
+	static next(_user_id, _id, _start = false)
 	{
 		let last = queue_catch[_user_id]
 		if(!last)
@@ -73,23 +68,37 @@ class queue
 			return
 		}
 		if(last.ID != _id)
+		{
 			return;
-
-		clearTimeout(last._timeout)
-
-		queue_catch[_user_id].queue.shift()
+		}
+		if(!_start)
+		{
+			clearTimeout(last._timeout)
+			queue_catch[_user_id].queue.shift()
+		}
 		if(queue_catch[_user_id].queue.length > 0)
 		{
-			let queue_track                = queue_catch[_user_id]
-			let time                       = (new Date()).getTime()
-			queue_track.ID                 = time + Math.random()
-			queue_track.time               = time
-			queue_catch[_user_id]._timeout = setTimeout(function()
-			{
-				console.error(`timeout for ${queue_catch[_user_id].user_id}`.yellow)
-				queue.next(queue_catch[_user_id].user_id, queue_catch[_user_id].ID)
-			}, queue_catch[_user_id].timeout)
-			nodity.trigger(queue_track.queue[0].method, null, queue_track.queue[0], new rs_methods[queue_track.queue[0].method](queue_track, queue_track.queue[0], nodity))
+			(async ()=>{
+				let queue_track                = queue_catch[_user_id]
+				if(nodity.options.onRequest)
+				{
+					let onRequest = await nodity.options.onRequest(queue_track.queue[0])
+					if(onRequest === false)
+					{
+						queue.next(_user_id, _id)
+						return false
+					}
+				}
+				let time                       = (new Date()).getTime()
+				queue_track.ID                 = time + Math.random()
+				queue_track.time               = time
+				queue_catch[_user_id]._timeout = setTimeout(function()
+				{
+					console.error(`timeout for ${queue_catch[_user_id].user_id}`.yellow)
+					queue.next(queue_catch[_user_id].user_id, queue_catch[_user_id].ID)
+				}, queue_catch[_user_id].timeout)
+				nodity.trigger(queue_track.queue[0].method, null, queue_track.queue[0], new rs_methods[queue_track.queue[0].method](queue_track, queue_track.queue[0], nodity))
+			})()
 		}
 		else
 		{

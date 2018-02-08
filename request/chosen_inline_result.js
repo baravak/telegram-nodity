@@ -4,7 +4,6 @@ class chosen_inline_result extends request
 	constructor(_method, _request, _nodity)
 	{
 		super(_method, _request, _nodity)
-		this.addMethod('getUser_id', 'getFrom_user_id', 'getFrom_username', 'getFrom_first_name', 'getFrom_last_name', 'getFrom_is_bot', 'getFrom_language_code')
 		this.ID = _request.chosen_inline_result.from.id
 	}
 
